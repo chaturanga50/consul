@@ -1,0 +1,30 @@
+---
+
+- hosts: all
+  gather_facts: yes
+  remote_user: root
+  roles:
+    - consul
+  vars:
+    consul_is_ui: true
+    consul_is_server: true
+    consul_use_systemd: true
+    consul_use_upstart: false
+    consul_use_initd: false
+    consul_ui_require_auth: true
+    consul_datacenter: "Consul-Test"
+    consul_bootstrap: true
+    consul_node_name: "Consule-Server-01"
+    nginx_remove_default: yes
+    htpasswd_user: "admin" 
+    htpasswd_pass: "admin"
+    nginx_sites:
+      - id: consul
+        add_webroot: no
+        name: consul.local
+        rules:
+          - gzip
+          - security
+        auth:
+          name: Consul
+          file: admin
